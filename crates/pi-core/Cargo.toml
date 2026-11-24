@@ -1,0 +1,12 @@
+[package]
+name = "pi-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Chudnovsky/binary-splitting pi computation plus digit and shape search"
+
+[dependencies]
+malachite-nz = "0.14"
+malachite-base = "0.14"
+rayon = "1.12"
+memchr = "2.8"

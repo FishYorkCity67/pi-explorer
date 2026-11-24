@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kleines π für die Statusleiste (einfarbig, wie Android es verlangt) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M4,7.2Q4,5.8 5.6,5.8L20,5.8L20,8L6.6,8Q5.9,8 5.6,8.5Z M8.2,7.5h2.3v11h-2.3z M13.3,7.5h2.3v8.3q0,1 1,1h1.9v1.9h-2.4q-2.8,0 -2.8,-2.8z" />
+</vector>

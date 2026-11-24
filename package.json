@@ -1,0 +1,26 @@
+{
+  "name": "pi-explorer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "tauri": "tauri",
+    "test:core": "cargo test -p pi-core --lib",
+    "test:reference": "cargo test -p pi-core --release --test reference -- --ignored --nocapture",
+    "bench": "cargo run --release -p pi-core --example bench -- 1000000 10000000",
+    "build:exe": "tauri build",
+    "build:apk": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-apk.ps1",
+    "build:apk:emulator": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-apk.ps1 -Emulator"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "@tauri-apps/api": "2.12.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.5",
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  }
+}

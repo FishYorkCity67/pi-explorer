@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#06080C" />
+    <title>π EXPLORER</title>
+  </head>
+  <body>
+    <canvas id="view"></canvas>
+
+    <div id="ui" hidden>
+      <header id="top">
+        <div id="topLeft">
+          <nav id="tabs" role="tablist">
+            <button class="tab active" data-mode="0" role="tab"><span class="n">01</span>NUMBERS</button>
+            <button class="tab" data-mode="1" role="tab"><span class="n">02</span>LETTERS</button>
+            <button class="tab" data-mode="2" role="tab"><span class="n">03</span>COLORS</button>
+            <button class="tab" data-mode="3" role="tab"><span class="n">04</span>BLACK &amp; WHITE</button>
+          </nav>
+          <div id="rowctl">
+            <span class="lbl">ROW WIDTH</span>
+            <button id="wDec" class="mini" aria-label="narrower">‹</button>
+            <input id="wInput" inputmode="numeric" autocomplete="off" spellcheck="false" />
+            <button id="wInc" class="mini" aria-label="wider">›</button>
+            <span id="legend"></span>
+          </div>
+        </div>
+        <div id="hud">
+          <span id="hudText"></span>
+          <button id="newBtn" class="mini">NEW</button>
+        </div>
+      </header>
+
+      <aside id="stats" hidden>
+        <div class="sec">
+          <div class="h">DIGIT FREQUENCY</div>
+          <div id="freq"></div>
+        </div>
+        <div class="sec">
+          <div class="h">COMPUTATION</div>
+          <dl id="compStats"></dl>
+        </div>
+        <div class="sec">
+          <div class="h">MEMORY</div>
+          <dl id="memStats"></dl>
+        </div>
+        <div class="sec">
+          <div class="h">LAST SEARCH</div>
+          <dl id="searchStats"></dl>
+        </div>
+        <div class="sec">
+          <div class="h">LONGEST REPETITION</div>
+          <dl id="runStats"></dl>
+        </div>
+      </aside>
+
+      <div id="result" hidden>
+        <button id="resClose" class="mini close" aria-label="close">×</button>
+        <div id="resConv"></div>
+        <div id="resTitle"></div>
+        <div id="resSub"></div>
+        <div id="resExtra"></div>
+        <div id="resNav">
+          <button id="prevBtn" class="mini" aria-label="previous">◀</button>
+          <span id="navText"></span>
+          <button id="nextBtn" class="mini" aria-label="next">▶</button>
+        </div>
+      </div>
+
+      <footer id="bar">
+        <div class="row">
+          <select id="kind">
+            <option value="number">ANY NUMBER</option>
+            <option value="birthday">BIRTHDAY</option>
+            <option value="word">WORD</option>
+          </select>
+          <input id="query" placeholder="type, then Enter" autocomplete="off" spellcheck="false" enterkeyhint="search" />
+        </div>
+        <div class="row">
+          <label id="fmtToggle" hidden title="also search DDMMYY and YYYYMMDD"><input type="checkbox" id="fmtAll" /><span>+FORMATS</span></label>
+          <button id="searchBtn">SEARCH</button>
+          <button id="shapeBtn">SHAPE</button>
+          <button id="hudBtn">+HUD</button>
+        </div>
+      </footer>
+
+      <div id="keys">1–4 MODES · / SEARCH · S SHAPE<br />F FIT · R RESET · H HUD<br />← → HITS · [ ] WIDTH</div>
+
+      <div id="shapePop" hidden>
+        <div class="pophead"><span>DRAW A SHAPE · 6×6</span><button id="shapeClose" class="mini close" aria-label="close">×</button></div>
+        <div id="shapeGrid"></div>
+        <div class="shapeOpts">
+          <label class="slider"><span>TOLERANCE <b id="tolVal">2</b> CELLS</span><input type="range" id="tol" min="0" max="12" value="2" /></label>
+          <label class="check"><input type="checkbox" id="onlyPainted" /><span>ONLY CHECK PAINTED CELLS</span></label>
+        </div>
+        <div class="popbtns">
+          <button id="shapeSearch" class="gold">SEARCH</button>
+          <button id="shapeClear">CLEAR</button>
+        </div>
+        <div class="hint">click cells, then search</div>
+      </div>
+
+      <div id="toast" hidden></div>
+    </div>
+
+    <section id="start">
+      <div class="inner">
+        <h1><span class="pi">π</span> EXPLORER</h1>
+        <p class="sub">CHUDNOVSKY · BINARY SPLITTING · NOTHING PRE-STORED</p>
+        <div class="label">MODE</div>
+        <div id="modes" class="seg">
+          <button data-calc="fast" class="on">FAST<small>everything in RAM</small></button>
+          <button data-calc="split">SPLIT<small>fixed RAM budget · slower</small></button>
+        </div>
+        <div id="budgetRow" hidden>
+          <div class="label">RAM BUDGET</div>
+          <div id="budgets"></div>
+        </div>
+        <div class="label">DIGITS</div>
+        <div id="presets"></div>
+        <div class="custom">
+          <input id="customDigits" placeholder="custom – e.g. 250m, 1.5b, 2 mrd" autocomplete="off" spellcheck="false" />
+        </div>
+        <details id="abbr">
+          <summary>ABBREVIATIONS</summary>
+          <table>
+            <tr><td>k · tsd</td><td>thousand</td><td>1,000</td><td>750k</td></tr>
+            <tr><td>m · mio · mil</td><td>million</td><td>1,000,000</td><td>250m</td></tr>
+            <tr><td>b · bn · mrd · g</td><td>billion</td><td>1,000,000,000</td><td>1.5b</td></tr>
+            <tr><td>e3 … e9</td><td>10 to the power</td><td>1e9 = 1,000,000,000</td><td>2e8</td></tr>
+          </table>
+          <p>Decimals with . or , work (1.5b = 1,5 mrd). Upper or lower case, spaces allowed.</p>
+        </details>
+        <div id="diskRow" hidden>
+          <div class="label">TEMPORARY FILES</div>
+          <select id="tempDir"></select>
+        </div>
+        <div id="estimate">&nbsp;</div>
+        <div id="warn" hidden></div>
+        <button id="computeBtn" class="gold big">COMPUTE π</button>
+        <div id="progress" hidden>
+          <div class="track"><div class="fill" id="pFill"></div></div>
+          <div class="pline"><span id="pPhase">SERIES</span><span id="pTime">00:00.0</span></div>
+          <div id="bgNote"></div>
+          <button id="cancelBtn">CANCEL</button>
+        </div>
+        <button id="backBtn" class="ghost" hidden>BACK TO THE DIGITS</button>
+        <div id="startErr" hidden></div>
+      </div>
+    </section>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
